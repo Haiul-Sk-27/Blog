@@ -1,19 +1,45 @@
 import React from 'react'
 import logo from '../assets/logo.png'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { Input } from './ui/input'
 import { Button } from './ui/button'
 import { Search } from 'lucide-react'
 import { NavLink } from 'react-router-dom'
 import { FaMoon, FaSun } from 'react-icons/fa';
 import { Avatar,AvatarImage,AvatarFallback } from './ui/avatar'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
+import axios from 'axios'
+import { toast } from 'sonner'
+import { setUser } from "@/redux/authSlice";
+import { toggleTheme } from '@/redux/themeSlice'
 
 const Navbar = () => {
-
+    
+    const {user} = useSelector(store=>store.auth)
+    const navigate = useNavigate()
     const {theme} = useSelector(store => store.theme)
+    const dispatch = useDispatch()
 
-    const user = false;
+    const logoutHandler = async (e) => {
+  console.log("Logout initiated");
+
+  try {
+    const res = await axios.post(`http://localhost:3000/api/v1/user/logout`, {
+      withCredentials: true,
+    });
+
+    if (res?.data?.success) {
+      dispatch(setUser(null));
+      toast.success(res.data.message);
+      navigate("/");
+    } else {
+      toast.error(res.data.message || "Logout failed");
+    }
+  } catch (error) {
+    console.log(error); 
+    toast.error(error.response.data.message||"server Error")
+  }
+};
     
     return (
         <div className='py-2 fixed w-full dark:bg-gray-800 dark:border-b-gray-600 border-b-gray-300 border-2 bg-white z-50'>
@@ -55,7 +81,7 @@ const Navbar = () => {
                                     <AvatarImage src="https://github.com/shadcn.png" />
                                     <AvatarFallback>CN</AvatarFallback>
                                 </Avatar>
-                                <Link to={"/logout"}><Button>Logout</Button></Link>
+                                <Button className="hidden md:block" onClick={logoutHandler}>Logout</Button>
                             </div> : <div className='ml-7 md:flex gap-2'>
                                 <Link to={"/login"}><Button>Login</Button></Link>
                                 <Link to={"/signup"}><Button>Signup</Button></Link>

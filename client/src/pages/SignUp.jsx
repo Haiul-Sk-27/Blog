@@ -39,7 +39,7 @@ const Signup = () => {
                 withCredentials: true,
             });
             if (response.data.success) {
-                navigate('/login')
+                navigate('/')
                 toast.success(response.data.message)
             } else {
                 toast.error(response.data.message)
