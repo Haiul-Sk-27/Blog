@@ -4,6 +4,7 @@ import { connectDb } from './db/db.js';
 import userRoute from './routes/user.route.js';
 import cors from 'cors'
 import cookieParser from 'cookie-parser';
+import blogRoute from './routes/course.route.js'
 
 dotenv.config();
 
@@ -23,6 +24,7 @@ app.use(express.json());
 const PORT = process.env.PORT || 3002 ;
 
 app.use('/api/v1/user',userRoute)
+app.use('/api/v1/blog',blogRoute)
 
 app.get('/', (req, res) => {
     res.send('Hello, server is running ✅');
