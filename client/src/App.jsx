@@ -5,13 +5,15 @@ import Blogs from "./pages/Blog";
 import About from "./pages/About";
 import SignUp from "./pages/SignUp";
 import Navbar from "./components/Navbar";
-import Login from "./pages/login";
 import Profile from "./pages/Profile";
 import Dashboard from "./pages/Dashboard";
 import UpdateBlog from "./pages/UpdateBlog";
 import CreateBlog from "./pages/CreateBlog";
 import YourBlog from "./pages/YourBlog";
 import Comments from "./pages/Comments";
+import BlogView from "./pages/BlogView";
+import ProtectedRoutes from "./components/ProtectedRoutes";
+import Login from "./pages/Login";
 
 const router = createBrowserRouter([
   {
@@ -33,6 +35,10 @@ const router = createBrowserRouter([
   {
     path:'/signUp',
     element:<><Navbar/><SignUp/></>
+  },
+  {
+    path:'/blogs/:blogId',
+    element:<><Navbar/><ProtectedRoutes><BlogView /></ProtectedRoutes></>
   },
   {
     path:'/dashboard',
