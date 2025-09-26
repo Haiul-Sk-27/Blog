@@ -1,6 +1,6 @@
 import { json } from "express";
 import { Blog } from "../models/blog.models.js";
-import getDataUri from "../utils/datauri.js";
+import getDataUri from "../utils/dataUri.js";
 import cloudinary from "../utils/cloudinary.js";
 import path from "path";
 import Comment from "../models/comments.model.js";
