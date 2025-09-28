@@ -16,7 +16,10 @@ app.use(express.urlencoded({extended:true}));
 
 
 app.use(cors({
-    origin: 'http://localhost:5173',
+    origin: [
+        "http://localhost:5173",
+        "https://blog-blond-two-12.vercel.app"
+    ],
     credentials: true
 }));
 app.use(express.json());

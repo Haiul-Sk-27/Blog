@@ -1,8 +1,6 @@
-import { json } from "express";
 import { Blog } from "../models/blog.models.js";
 import getDataUri from '../utils/datauri.js';
 import cloudinary from "../utils/cloudinary.js";
-import path from "path";
 import Comment from "../models/comments.model.js";
 
 export const createBlog = async (req,res) =>{
@@ -92,52 +90,65 @@ export const getOwnBlogs = async (req, res) => {
     }
 };
 
-export const deleteBlog= async(req,res) =>{
-    try{
-        const blogId = req.params.id;
-        const authorId = req.id
-        const blog = await Blog.findById(blogId);
+export const deleteBlog = async (req, res) => {
+  try {
+    const blogId = req.params.id;
+    const authorId = req.id; // assuming req.id is the logged-in user ID
+    console.log("Delete request for blog ID:", blogId, "by user ID:", authorId);
 
+    // Find the blog
+    const blog = await Blog.findById(blogId);
+    if (!blog) {
+      console.log("Blog not found:", blogId);
+      return res.status(404).json({
+        success: false,
+        message: "Unauthorized to delete blog or blog not found",
+      });
+    }
+
+    console.log("Blog found:", blog.title, "Proceeding to delete...");
+
+    // Delete the blog
+    await Blog.findByIdAndDelete(blogId);
+    console.log("Blog deleted:", blogId);
+
+    // Delete all comments associated with this blog
+    const deletedComments = await Comment.deleteMany({ postId: blogId });
+    console.log(`Deleted ${deletedComments.deletedCount} comments associated with the blog.`);
+
+    res.status(200).json({ success: true, message: "Blog deleted successfully" });
+
+  } catch (error) {
+    console.error("Error deleting blog:", error);
+    res.status(500).json({ success: false, message: "Error deleting blog", error: error.message });
+  }
+};
+
+
+export const togglePublishBlog = async (req,res) => {
+    try {
+        const {blogId} = req.params;
+        const {publish} = req.query; // true, false
+        
+        const blog = await Blog.findById(blogId);
         if(!blog){
             return res.status(404).json({
-                success:false,
-                message:"Unauthorized to delete blog"
-            })
+                message:"Blog not found!"
+            });
         }
+        // publish status based on the query paramter
+        blog.isPublished = !blog.isPublished
+        await blog.save();
 
-        await Blog.findByIdAndDelete(blogId);
-
-        await Comment.deleteMany({postId:blogId})
-
-        res.status(200).json({ success: true, message: "Blog deleted successfully" });
-    }catch(error){
-        res.status(500).json({ success: false, message: "Error deleting blog", error: error.message });
-    }
-}
-
-export const getPublishedBlog = async (_,res) => {
-    try {
-        const blogs = await Blog.find({isPublished:true}).sort({ createdAt: -1 }).populate({path:"author", select:"firstName lastName photoUrl"}).populate({
-            path: 'comments',
-            sort: { createdAt: -1 },
-            populate: {
-                path: 'userId',
-                select: 'firstName lastName photoUrl'
-            }
-        });
-        if(!blogs){
-            return res.status(404).json({
-                message:"Blog not found"
-            })
-        }
+        const statusMessage = blog.isPublished ? "Published" : "Unpublished";
         return res.status(200).json({
             success:true,
-            blogs,
-        })
+            message:`Blog is ${statusMessage}`
+        });
     } catch (error) {
         console.log(error);
         return res.status(500).json({
-            message:"Failed to get published blogs"
+            message:"Failed to update status"
         })
     }
 }
