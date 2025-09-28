@@ -30,6 +30,7 @@ const UpdateBlog = () => {
     const { blog } = useSelector(store => store.blog)
     const selectBlog = blog.find(blog => blog._id === id)
     const [content, setContent] = useState(selectBlog.description);
+    const [publish,setPublish] = useState(false)
 
     const [blogData, setBlogData] = useState({
         title: selectBlog?.title,
@@ -71,7 +72,7 @@ const UpdateBlog = () => {
         formData.append("file", blogData.thumbnail);
         try {
             setLoading(true)
-            const res = await axios.put(`http://localhost:3000/api/v1/blog/${id}`, formData, {
+            const res = await axios.put(`https://blog-uv51.onrender.com/api/v1/blog/${id}`, formData, {
                 headers: {
                     "Content-Type": "multipart/form-data"
                 },
@@ -92,47 +93,43 @@ const UpdateBlog = () => {
         }
     }
 
-    // const togglePublishUnpublish = async (action) => {
-    //     console.log("action", action);
+    const togglePublishUnpublish = async (action) => {
+        try{
+            const res = await axios.patch(`https://blog-uv51.onrender.com/api/v1/blog/${id}`,{
+                params:{
+                    action
+                },
+                withCredentials:true
+            })
 
-    //     try {
-    //         const res = await axios.patch(`https://mern-blog-ha28.onrender.com/api/v1/blog/${id}`, {
-    //             params: {
-    //                 action
-    //             },
-    //             withCredentials: true
-    //         })
-    //         if (res.data.success) {
-    //             setPublish(!publish)
-    //             toast.success(res.data.message)
-    //             navigate(`/dashboard/your-blog`)
-    //         } else {
-    //             toast.error("Failed to update")
-    //         }
-    //     } catch (error) {
-    //         console.log(error);
+            if(res.data.success){
+                setPublish(!publish)
+                toast.success(res.data.message)
+                navigate('/dashboard/your-blog')
+            }else{
+                toast.error("Faile to update")
+            }
+        }catch(error){
+            console.log(error)
+        }
+    }
 
-    //     }
-    // }
+    const deleteBlog = async () => {
+        try{
+            const res = await axios.delete(`https://blog-uv51.onrender.com/api/v1/blog/delete/${id}`,{withCredentials:true})
 
-    // const deleteBlog = async () => {
-    //     try {
-    //         const res = await axios.delete(`https://mern-blog-ha28.onrender.com/api/v1/blog/delete/${id}`, { withCredentials: true })
-    //         if (res.data.success) {
-    //             const updatedBlogData = blog.filter((blogItem) => blogItem?._id !== id);
-    //             dispatch(setBlog(updatedBlogData))
-    //             toast.success(res.data.message)
-    //             navigate('/dashboard/your-blog')
-    //         }
-    //         console.log(res.data.message);
-
-    //     } catch (error) {
-    //         console.log(error);
-    //         toast.error("something went error")
-    //     }
-
-    // }
-
+            if (res.data.success) {
+                const updatedBlogData = blog.filter((blogItem) => blogItem?._id !== id);
+                dispatch(setBlog(updatedBlogData))
+                toast.success(res.data.message)
+                navigate('/dashboard/your-blog')
+            }
+            console.log(res.data.message);
+        }catch(error){
+            console.log(error)
+            toast.error("Something went wrong")
+        }
+    }
     return (
         <div className='pb-10 px-3 pt-20 md:ml-[320px]'>
             <div className='max-w-6xl mx-auto mt-8'>
@@ -144,7 +141,7 @@ const UpdateBlog = () => {
                         >
                             {selectBlog?.isPublished ? "UnPublish" : "Publish"}
                         </Button>
-                        <Button variant="destructive" >Remove Course</Button>
+                        <Button onClick={deleteBlog} variant="destructive" >Remove Course</Button>
                     </div>
                     <div className='pt-10'>
                         <Label>Title</Label>
