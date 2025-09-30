@@ -97,13 +97,13 @@ const BlogView = () => {
                     <BreadcrumbList>
                         <BreadcrumbItem>
                             <BreadcrumbLink asChild>
-                                <Link href="/">Home</Link>
+                                <Link to={"/"}>Home</Link>
                             </BreadcrumbLink>
                         </BreadcrumbItem>
                         <BreadcrumbSeparator />
                         <BreadcrumbItem>
                             <BreadcrumbLink asChild>
-                                <Link href="/docs/components">Blogs</Link>
+                                <Link to={"/dashboard/your-blog"}>Blogs</Link>
                             </BreadcrumbLink>
                         </BreadcrumbItem>
                         <BreadcrumbSeparator />

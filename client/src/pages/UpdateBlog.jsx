@@ -83,7 +83,7 @@ const UpdateBlog = () => {
                 // dispatch([...course, setCourse(res.data.course)])
                 console.log(blogData);
 
-
+                navigate('/dashboard/your-blog')
             }
         } catch (error) {
             console.log(error);

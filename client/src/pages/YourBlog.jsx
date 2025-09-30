@@ -82,22 +82,22 @@ const YourBlog = () => {
 
         }
     }
-    // const deleteBlog = async (id) => {
-    //     try {
-    //         const res = await axios.delete(`https://mern-blog-ha28.onrender.com/api/v1/blog/delete/${id}`, { withCredentials: true })
-    //         if (res.data.success) {
-    //             const updatedBlogData = blog.filter((blogItem) => blogItem?._id !== id);
-    //             dispatch(setBlog(updatedBlogData))
-    //             toast.success(res.data.message)
-    //         }
-    //         console.log(res.data.message);
+    const deleteBlog = async (id) => {
+        try {
+            const res = await axios.delete(`http://localhost:3000/api/v1/blog/delete/${id}`, { withCredentials: true })
+            if (res.data.success) {
+                const updatedBlogData = blog.filter((blogItem) => blogItem?._id !== id);
+                dispatch(setBlog(updatedBlogData))
+                toast.success(res.data.message)
+            }
+            console.log(res.data.message);
 
-    //     } catch (error) {
-    //         console.log(error);
-    //         toast.error("something went error")
-    //     }
+        } catch (error) {
+            console.log(error);
+            toast.error("something went error")
+        }
 
-    // }
+    }
     useEffect(() => {
         getOwnBlog()
     }, [])
