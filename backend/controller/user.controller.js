@@ -60,7 +60,7 @@ export const register = async(req,res) => {
         console.log(error)
         return res.status(500).json({
             success:false,
-            message:"Failed to login"
+            message:"Failed to Signup"
         })
     }
 }
