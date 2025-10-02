@@ -2,6 +2,7 @@ import { Blog } from "../models/blog.models.js";
 import getDataUri from '../utils/datauri.js';
 import cloudinary from "../utils/cloudinary.js";
 import Comment from "../models/comments.model.js";
+import { populate } from "dotenv";
 
 export const createBlog = async (req,res) =>{
     try{
@@ -57,6 +58,43 @@ export const updateBlog = async (req, res) => {
         res.status(200).json({ success: true, message: "Blog updated successfully", blog });
     } catch (error) {
         res.status(500).json({ success: false, message: "Error updating blog", error: error.message });
+    }
+};
+
+export const getPublichedBlog = async (__, res) => {
+    try {
+        const blogs = await Blog.find({ isPublished: true })
+            .sort({ createdAt: -1 })
+            .populate({
+                path: "author",
+                select: "firstName lastName photoUrl"
+            })
+            .populate({
+                path: "comments",
+                options: { sort: { createdAt: -1 } }, 
+                populate: {
+                    path: 'userId',
+                    select: 'firstName lastName photoUrl'
+                }
+            });
+
+        if (!blogs) {
+            return res.status(404).json({
+                message: "No blog found"
+            });
+        }
+
+        return res.status(200).json({
+            success: true,
+            blogs
+        });
+
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({
+            success: false,
+            message: "Failed to get published blogs"
+        });
     }
 };
 
