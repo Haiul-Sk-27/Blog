@@ -15,9 +15,9 @@ const Footer = () => {
               <h1 className=' text-3xl font-bold'>Logo</h1>
             </Link>
             <p className='mt-2'>Sharing insights, tutorials, and ideas on web development and tech.</p>
-            <p className='mt-2 text-sm'>123 Blog St, Style City, NY 10001</p>
-            <p className='text-sm'>Email: support@blog.com</p>
-            <p className='text-sm'>Phone: (123) 456-7890</p>
+            <p className='mt-2 text-sm'>Rangamati Chandpara,Jadupur,Berhampore,Murshidabad,West Bengal</p>
+            <p className='text-sm'>Email: HaiulSk037@Gamil.com</p>
+            <p className='text-sm'>Phone: +917478173038</p>
         </div>
         {/* customer service link */}
         <div className='mb-6 md:mb-0'>
