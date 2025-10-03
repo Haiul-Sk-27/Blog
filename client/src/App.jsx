@@ -14,19 +14,20 @@ import Comments from "./pages/Comments";
 import BlogView from "./pages/BlogView";
 import ProtectedRoutes from "./components/ProtectedRoutes";
 import Login from "./pages/Login";
+import Footer from "./components/Footer";
 
 const router = createBrowserRouter([
   {
     path:'/',
-    element:<><Navbar/><Home/></>
+    element:<><Navbar/><Home/><Footer/></>
   },
   {
     path:'/blogs',
-    element:<><Navbar/><Blogs/></>
+    element:<><Navbar/><Blogs/><Footer/></>
   },
   {
     path:"/about",
-    element:<><Navbar/><About/></>
+    element:<><Navbar/><About/><Footer/></>
   },
   {
     path:'/login',
