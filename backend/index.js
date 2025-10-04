@@ -5,6 +5,7 @@ import userRoute from './routes/user.route.js';
 import cors from 'cors'
 import cookieParser from 'cookie-parser';
 import blogRoute from './routes/course.route.js'
+import commentRoute from './routes/comments.route.js'
 
 dotenv.config();
 
@@ -12,7 +13,7 @@ const app = express();
 
 // default middleware
 app.use(cookieParser());
-app.use(express.urlencoded({extended:true}));
+app.use(express.urlencoded({ extended: true }));
 
 
 app.use(cors({
@@ -24,10 +25,11 @@ app.use(cors({
 }));
 app.use(express.json());
 
-const PORT = process.env.PORT || 3002 ;
+const PORT = process.env.PORT || 3002;
 
-app.use('/api/v1/user',userRoute)
-app.use('/api/v1/blog',blogRoute)
+app.use('/api/v1/user', userRoute)
+app.use('/api/v1/blog', blogRoute)
+app.use("/api/v1/comment", commentRoute)
 
 app.get('/', (req, res) => {
     res.send('Hello, server is running ✅');

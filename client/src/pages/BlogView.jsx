@@ -18,6 +18,7 @@ import { Bookmark, MessageSquare, User } from 'lucide-react';
 import { Share2 } from 'lucide-react';
 import { toast } from 'sonner';
 import axios from 'axios';
+import CommentsBox from '@/components/CommentsBox';
 
 const BlogView = () => {
     const params = useParams();
@@ -170,7 +171,7 @@ const BlogView = () => {
                         </div>
                     </div>
                 </div>
-                {/*<CommentBox selectedBlog={selectedBlog} />*/}
+                <CommentsBox selectedBlog={selectedBlog} />
             </div>
         </div>
     )
