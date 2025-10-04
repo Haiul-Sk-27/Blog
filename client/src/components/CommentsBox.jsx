@@ -53,7 +53,7 @@ const CommentBox = ({ selectedBlog }) => {
   useEffect(() => {
     const getAllCommentsOfBlog = async () => {
       try {
-        const res = await axios.get(`http://localhost:3000/api/v1/comment/${selectedBlog._id}/comments/all`)
+        const res = await axios.get(`https://blog-uv51.onrender.com/api/v1/comment/${selectedBlog._id}/comments/all`)
         const data = res.data.comments
         dispatch(setComment(data))
       } catch (error) {
@@ -68,7 +68,7 @@ const CommentBox = ({ selectedBlog }) => {
     try {
 
       const token = localStorage.getItem("token");
-      const res = await axios.post(`http://localhost:3000/api/v1/comment/${selectedBlog._id}/create`, { content }, {
+      const res = await axios.post(`https://blog-uv51.onrender.com/api/v1/comment/${selectedBlog._id}/create`, { content }, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
@@ -108,7 +108,7 @@ const CommentBox = ({ selectedBlog }) => {
       const token = localStorage.getItem("token");
 
       const res = await axios.delete(
-        `http://localhost:3000/api/v1/comment/${commentId}/delete`,
+        `https://blog-uv51.onrender.com/api/v1/comment/${commentId}/delete`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -136,7 +136,7 @@ const CommentBox = ({ selectedBlog }) => {
       const token = localStorage.getItem("token");
 
       const res = await axios.put(
-        `http://localhost:3000/api/v1/comment/${commentId}/edit`,
+        `https://blog-uv51.onrender.com/api/v1/comment/${commentId}/edit`,
         { content: editedContent },
         {
           withCredentials: true,
@@ -167,7 +167,7 @@ const CommentBox = ({ selectedBlog }) => {
       const token = localStorage.getItem("token");
 
       const res = await axios.get(
-        `http://localhost:3000/api/v1/comment/${commentId}/like`,
+        `https://blog-uv51.onrender.com/api/v1/comment/${commentId}/like`,
         {
           withCredentials: true,
           headers: {
