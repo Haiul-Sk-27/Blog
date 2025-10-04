@@ -12,7 +12,6 @@ const commentSlice = createSlice({
             state.loading = action.payload;
         },
         setComment:(state, action) => {
-            console.log("Action_payload: ",action.payload)
             state.comment = action.payload;
         }  
     }

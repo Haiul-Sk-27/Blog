@@ -40,6 +40,8 @@ const Login = () => {
       });
       if (response.data.success) {
         navigate('/')
+        localStorage.setItem("token", response.data.token);
+        console.log("Saved Token:", response.data.token);
         dispatch(setUser(response.data.user))
         toast.success(response.data.message)
       }
@@ -56,47 +58,47 @@ const Login = () => {
         <img src={auth} alt="" className='h-[729px]' />
       </div>
       <div className='flex justify-center items-center flex-1 px-4 md:px-0'>
-      <Card className="w-full max-w-md p-6 shadow-lg rounded-2xl dark:bg-gray-800 dark:border-gray-600">
-        <CardHeader>
-          <CardTitle className="text-center text-xl font-semibold">Login into your account</CardTitle>
-          <p className='text-gray-600 dark:text-gray-300 mt-2 text-sm font-serif text-center'>Enter your details below to login your account</p>
-        </CardHeader>
-        <CardContent>
-          <form className="space-y-4" onSubmit={handleSubmit}>
-            <div>
-              <Label>Email</Label>
-              <Input type="email"
-                placeholder="Email Address"
-                name="email"
-                value={input.email}
-                onChange={handleChange}
-                className="dark:border-gray-600 dark:bg-gray-900"
-              />
-            </div>
+        <Card className="w-full max-w-md p-6 shadow-lg rounded-2xl dark:bg-gray-800 dark:border-gray-600">
+          <CardHeader>
+            <CardTitle className="text-center text-xl font-semibold">Login into your account</CardTitle>
+            <p className='text-gray-600 dark:text-gray-300 mt-2 text-sm font-serif text-center'>Enter your details below to login your account</p>
+          </CardHeader>
+          <CardContent>
+            <form className="space-y-4" onSubmit={handleSubmit}>
+              <div>
+                <Label>Email</Label>
+                <Input type="email"
+                  placeholder="Email Address"
+                  name="email"
+                  value={input.email}
+                  onChange={handleChange}
+                  className="dark:border-gray-600 dark:bg-gray-900"
+                />
+              </div>
 
-            <div className="relative">
-              <Label>Password</Label>
-              <Input type={showPassword ? "text" : "password"}
-                placeholder="Enter Your Password"
-                name="password"
-                value={input.password}
-                onChange={handleChange}
-                className="dark:border-gray-600 dark:bg-gray-900"
-              />
-              <button
-                type="button"
-                className="absolute right-3 top-6 text-gray-500"
-                onClick={() => setShowPassword(!showPassword)}
-              >
-                {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
-              </button>
-            </div>
+              <div className="relative">
+                <Label>Password</Label>
+                <Input type={showPassword ? "text" : "password"}
+                  placeholder="Enter Your Password"
+                  name="password"
+                  value={input.password}
+                  onChange={handleChange}
+                  className="dark:border-gray-600 dark:bg-gray-900"
+                />
+                <button
+                  type="button"
+                  className="absolute right-3 top-6 text-gray-500"
+                  onClick={() => setShowPassword(!showPassword)}
+                >
+                  {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                </button>
+              </div>
 
-            <Button type="submit" className="w-full">Login</Button>
-            <p className='text-center text-gray-600 dark:text-gray-300'>Don't have an account? <Link to={'/signup'}><span className='underline cursor-pointer hover:text-gray-800'>Sign up</span></Link></p>
-          </form>
-        </CardContent>
-      </Card>
+              <Button type="submit" className="w-full">Login</Button>
+              <p className='text-center text-gray-600 dark:text-gray-300'>Don't have an account? <Link to={'/signup'}><span className='underline cursor-pointer hover:text-gray-800'>Sign up</span></Link></p>
+            </form>
+          </CardContent>
+        </Card>
       </div>
     </div>
   )

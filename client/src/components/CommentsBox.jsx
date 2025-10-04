@@ -66,14 +66,17 @@ const CommentBox = ({ selectedBlog }) => {
 
   const commentHandler = async () => {
     try {
+
+      const token = localStorage.getItem("token");
       const res = await axios.post(`http://localhost:3000/api/v1/comment/${selectedBlog._id}/create`, { content }, {
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
         withCredentials: true
       });
 
-      console.log("Comment add",res)
+      console.log("Comment add", res)
       if (res.data.success) {
         let updatedCommentData
         console.log(comment);
@@ -101,9 +104,18 @@ const CommentBox = ({ selectedBlog }) => {
 
   const deleteComment = async (commentId) => {
     try {
-      const res = await axios.delete(`http://localhost:3000/api/v1/comment/${commentId}/delete`, {
-        withCredentials: true
-      })
+
+      const token = localStorage.getItem("token");
+
+      const res = await axios.delete(
+        `http://localhost:3000/api/v1/comment/${commentId}/delete`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          withCredentials: true,
+        }
+      );
       if (res.data.success) {
         const updatedCommentData = comment.filter((item) => item._id !== commentId)
         console.log(updatedCommentData);
@@ -120,14 +132,18 @@ const CommentBox = ({ selectedBlog }) => {
 
   const editCommentHandler = async (commentId) => {
     try {
+
+      const token = localStorage.getItem("token");
+
       const res = await axios.put(
         `http://localhost:3000/api/v1/comment/${commentId}/edit`,
         { content: editedContent },
         {
           withCredentials: true,
           headers: {
-            "Content-Type": "application/json"
-          }
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
         }
       );
 
@@ -148,14 +164,17 @@ const CommentBox = ({ selectedBlog }) => {
 
   const likeCommentHandler = async (commentId) => {
     try {
+      const token = localStorage.getItem("token");
+
       const res = await axios.get(
         `http://localhost:3000/api/v1/comment/${commentId}/like`,
         {
           withCredentials: true,
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         }
       );
-
-      console.log("like comment",res)
 
       if (res.data.success) {
         const updatedComment = res.data.updatedComment;
