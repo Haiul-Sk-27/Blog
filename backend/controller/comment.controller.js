@@ -97,39 +97,33 @@ export const deleteComment = async (req, res) => {
     }
 }
 
-export const editCommnent = async (req, res) => {
-    try {
+export const editComment = async (req, res) => {
+  try {
+    const userId = req.id
+    const { content } = req.body
+    const commentId = req.params.id
 
-        const userId = req.id;
-        const { content } = req.body;
-        const commentId = req.params.id;
-
-        const commnet = await Comment.findById(commentId);
-        if (!commentId) {
-            return res.status(403).json({
-                success: false,
-                message: "Commenst not found"
-            })
-        }
-
-        if (commnet.userId.toString() !== userId) {
-            return res.status(403).json({
-                success: false,
-                message: "Not authorized to edit comment"
-            })
-        }
-
-        commnet.content = content;
-        commnet.editAt = new Date();
-
-        await commnet.save();
-
-        res.status(200).json({ success: true, message: 'Comment updated successfully', comment });
-
-    } catch (error) {
-        console.log(error);
-        res.status(500).json({ success: false, message: "Error editing comment", error: error.message });
+    const comment = await Comment.findById(commentId);
+    if (!comment) {
+      return res.status(404).json({ message: 'Comment not found' });
     }
+    // check if the user owns the comment
+    if (comment.userId.toString() !== userId) {
+      return res.status(403).json({ success: false, message: 'Not authorized to edit this comment' });
+    }
+
+    comment.content = content;
+    comment.editedAt = new Date();
+
+    await comment.save();
+
+    res.status(200).json({ success: true, message: 'Comment updated successfully', comment });
+
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ success: false, message: "Comment is not edited", error: error.message })
+
+  }
 }
 
 export const likeComment = async (req, res) => {

@@ -25,7 +25,7 @@ app.use(cors({
 }));
 app.use(express.json());
 
-const PORT = process.env.PORT || 3002;
+const PORT = process.env.PORT;
 
 app.use('/api/v1/user', userRoute)
 app.use('/api/v1/blog', blogRoute)
