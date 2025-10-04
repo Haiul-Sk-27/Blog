@@ -84,7 +84,12 @@ const YourBlog = () => {
     }
     const deleteBlog = async (id) => {
         try {
-            const res = await axios.delete(`http://localhost:3000/api/v1/blog/delete/${id}`, { withCredentials: true })
+            const token = localStorage.getItem("token");
+            const res = await axios.delete(`https://blog-uv51.onrender.com/api/v1/blog/delete/${id}`, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
             if (res.data.success) {
                 const updatedBlogData = blog.filter((blogItem) => blogItem?._id !== id);
                 dispatch(setBlog(updatedBlogData))
